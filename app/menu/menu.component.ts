@@ -15,7 +15,7 @@ export class MenuComponent implements OnInit {
 
   constructor(private dishService: DishService,
     @Inject('BaseURL') private BaseURL) { }
-  
+  //comment
   ngOnInit() {
     this.dishService.getDishes()
     .subscribe(dishes => this.dishes = dishes,
