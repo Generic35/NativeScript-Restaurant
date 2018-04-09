@@ -2,12 +2,12 @@ import { Component, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
 import { DrawerPage } from '../shared/drawer/drawer.page';
 
 @Component({
-    selector: 'app-contact',
+    selector: 'app-con',
     moduleId: module.id,
-    templateUrl: './contact.component.html',
-    styleUrls: ['./contact.component.css']
+    templateUrl: './about.component.html',
+    styleUrls: ['./about.component.css']
 })
-export class ContactComponent extends DrawerPage implements OnInit {
+export class AboutComponent extends DrawerPage implements OnInit {
     address: any =
         {
             street: '121, Clear Water Bay Road',
