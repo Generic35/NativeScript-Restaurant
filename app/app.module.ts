@@ -1,3 +1,6 @@
+// tns debug ios
+// tns run ios --emulator
+
 import { NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
 
 import { NativeScriptModule } from "nativescript-angular/nativescript.module";

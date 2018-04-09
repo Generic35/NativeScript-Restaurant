@@ -6,15 +6,39 @@
             <drawer-content></drawer-content>
         </StackLayout>
     </ScrollView>
-    <ScrollView orientation="vertical" tkMainContent class="page">
-        <GridLayout class="m-5" rows="auto">
-            <StackLayout row="0">
-                <Label text="Contact Information" class="h2"></Label>
-                <Label class="body" [text]="address.street" textWrap="true"></Label>
-                <Label class="body" [text]="address.city" textWrap="true"></Label>
-                <Label class="body" [text]="address.tel" textWrap="true"></Label>
-                <Label class="body" [text]="address.email" textWrap="true"></Label>
+    <StackLayout tkMainContent>
+        <ScrollView orientation="vertical" class="page">
+            <GridLayout class="m-5" rows="auto auto">
+                <StackLayout class="p-10 border" row="0">
+                    <Label text="Our History" class="h2"></Label>
+                    <Label class="body" [text]="history.paragraph1" textWrap="true"></Label>
+                    <Label class="body" [text]="history.paragraph2" textWrap="true"></Label>
+                </StackLayout>
+                <StackLayout class="p-10" row="1">
+                    <Label text="Corporate Leadership" class="h2"></Label>
+                </StackLayout>
+            </GridLayout>
+        </ScrollView>
+        <ListView [items]="leaders" class="list-group leaders" *ngIf="leaders">
+            <ng-template let-leader="item">
+                <StackLayout orientation="horizontal" class="list-group-item">
+                    <Image row="0" col="0" rowSpan="3" height="108" width="108" [src]="BaseURL + leader.image" class="img-circle avatar"></Image>
+                    <GridLayout class="list-group-item" rows="auto auto *" columns="*">
+                        <Label row="0" col="0" [text]="leader.name" class="list-group-item-heading"></Label>
+                        <Label row="1" col="0" class="list-group-item-text" [text]="leader.designation"></Label>
+                        <Label row="2" col="0" class="list-group-item-text" [text]="leader.description" textWrap="true"></Label>
+                        <Label *ngIf="leadersErrMess" [text]="'Error: ' + leadersErrMess"></Label>
+                    </GridLayout>
+                </StackLayout>
+            </ng-template>
+        </ListView>
+    </StackLayout>
+    <!-- <GridLayout class="m-5" rows="auto auto">
+            <StackLayout class="p-10" row="0">
+                <Label text="Corporate Leadership" class="h2">
+
+                </Label>
             </StackLayout>
-        </GridLayout>
-    </ScrollView>
+        </GridLayout> -->
+
 </RadSideDrawer>

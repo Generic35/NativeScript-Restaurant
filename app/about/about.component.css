@@ -1,0 +1,23 @@
+.leaders {
+    height: 100%
+}
+
+.green-background {
+    background-color: green;
+}
+
+.red-background {
+    background-color: red;
+}
+
+.yellow-background {
+    background-color: yellow;
+}
+
+.pink-background {
+    background-color: pink;
+}
+
+.avatar {
+    border-radius: 60;
+}
