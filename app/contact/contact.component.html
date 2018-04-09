@@ -1,0 +1,20 @@
+<ActionBar title="Contact US" class="action-bar">
+</ActionBar>
+<RadSideDrawer #drawerComponent tkToggleNavButton showOverNavigation="true">
+    <ScrollView tkDrawerContent class="sidedrawer-left">
+        <StackLayout horizontalAlign="left">
+            <drawer-content></drawer-content>
+        </StackLayout>
+    </ScrollView>
+    <ScrollView orientation="vertical" tkMainContent class="page">
+        <GridLayout class="m-5" rows="auto">
+            <StackLayout row="0">
+                <Label text="Contact Information" class="h2"></Label>
+                <Label class="body" [text]="address.street" textWrap="true"></Label>
+                <Label class="body" [text]="address.city" textWrap="true"></Label>
+                <Label class="body" [text]="address.tel" textWrap="true"></Label>
+                <Label class="body" [text]="address.email" textWrap="true"></Label>
+            </StackLayout>
+        </GridLayout>
+    </ScrollView>
+</RadSideDrawer>
