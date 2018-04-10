@@ -1,7 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { Dish } from '../shared/dish';
-import { Comment } from '../shared/comment';
-import { DishService } from '../services/dish.service';
+import { Component, OnInit, Inject, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { RouterExtensions } from 'nativescript-angular/router';
 import 'rxjs/add/operator/switchMap';
@@ -9,6 +6,12 @@ import { FavoriteService } from '../services/favorite.service';
 import { TNSFontIconService } from 'nativescript-ngx-fonticon';
 import { Toasty } from 'nativescript-toasty';
 import { action } from "ui/dialogs";
+import { ModalDialogService, ModalDialogOptions } from "nativescript-angular/modal-dialog";
+
+import { Dish } from '../shared/dish';
+import { Comment } from '../shared/comment';
+import { CommentComponent } from '../comment/comment.component';
+import { DishService } from '../services/dish.service';
 
 @Component({
   selector: 'app-dishdetail',
@@ -30,6 +33,8 @@ export class DishdetailComponent implements OnInit {
     private favoriteservice: FavoriteService,
     private fonticon: TNSFontIconService,
     private routerExtensions: RouterExtensions,
+    private modalService: ModalDialogService,
+    private vcRef: ViewContainerRef,
     @Inject('BaseURL') private BaseURL) { }
 
   ngOnInit() {
@@ -68,9 +73,23 @@ export class DishdetailComponent implements OnInit {
     action(options).then((result) => {
       if(result === "Add to Favorites"){
         this.addToFavorites();
-        console.log('adding to favorites')
+        console.log('adding to favorites');
       } else {
-        console.log('not adding to favorites')
+        console.log('adding a comment');
+
+        let options: ModalDialogOptions = {
+          viewContainerRef: this.vcRef,
+          fullscreen: false
+      };
+
+        this.modalService.showModal(CommentComponent, options)
+        .then((result: any) => {
+            console.log( `the comment modal has returned ${result}`);
+            let comment: Comment = result;
+            comment.date = new Date().toISOString();
+            this.dish.comments.push(comment);
+            console.log( `saving comment...`)
+        });
       }
       console.log(`results of action dialog selection ${result}`);
     });
