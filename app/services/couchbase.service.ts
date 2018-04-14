@@ -23,6 +23,8 @@ export class CouchbaseService {
     }
 
     public updateDocument(docId: string, data: any) {
+        console.log('inside the couchbase update, the doc id is ', docId)
+        console.log('inside the couchbase update, the data is ', data)
         return this.database.updateDocument(docId, data);
     }
 

@@ -10,6 +10,7 @@ import * as enums from "ui/enums";
 
 import { DrawerPage } from '../shared/drawer/drawer.page';
 import { ReservationModalComponent } from "../reservationmodal/reservationmodal.component";
+import { CouchbaseService } from '../services/couchbase.service';
 
 @Component({
     selector: 'app-reservation',
@@ -21,10 +22,12 @@ export class ReservationComponent extends DrawerPage implements OnInit {
     reservation: FormGroup;
     cardLayout: View;
     isReservationConfirmed: boolean;
+    docId: string = "reservations";
+    reservations: any[];
 
     constructor(private changeDetectorRef: ChangeDetectorRef,
         private formBuilder: FormBuilder, private modalService: ModalDialogService, 
-        private vcRef: ViewContainerRef, private page: Page) {
+        private vcRef: ViewContainerRef, private page: Page, private couchbaseService: CouchbaseService) {
             super(changeDetectorRef);
 
             this.reservation = this.formBuilder.group({
@@ -35,7 +38,17 @@ export class ReservationComponent extends DrawerPage implements OnInit {
     }
 
     ngOnInit() {
-
+        this.reservations = []
+        console.log('checking if doc exists')
+        let doc = this.couchbaseService.getDocument(this.docId);
+        if (doc == null) {
+            console.log('document being initialized')
+            this.couchbaseService.createDocument({ "reservations": [] }, this.docId);
+        }
+        else {
+            console.log('found existing docs ', doc.reservations)
+            this.reservations = doc.reservations;
+        }
     }
 
     onSmokingChecked(args) {
@@ -61,9 +74,9 @@ export class ReservationComponent extends DrawerPage implements OnInit {
     }
 
     onSubmit() {
-        
-        this.animateFadeOut();        
-        console.log('these are the forms values', JSON.stringify(this.reservation.value));
+        this.reservations.push(this.reservation.value);
+        this.couchbaseService.updateDocument(this.docId, { "reservations": this.reservations });
+        this.animateFadeOut();
     }
 
     createModalView(args) {
@@ -88,7 +101,6 @@ export class ReservationComponent extends DrawerPage implements OnInit {
 
     animateFadeOut() {
         this.cardLayout = <View>this.page.getViewById<View>("cardLayout");
-        console.log('this is the cardLayout', this.cardLayout)
         let definitions = new Array<AnimationDefinition>();
         let a1: AnimationDefinition = {
             target: this.cardLayout,
@@ -103,7 +115,6 @@ export class ReservationComponent extends DrawerPage implements OnInit {
         let animationSet = new Animation(definitions);
 
         animationSet.play().then(() => {
-          console.log('fade out completed...');
           this.isReservationConfirmed = true;
           this.animateFadeIn();
         })
@@ -114,7 +125,6 @@ export class ReservationComponent extends DrawerPage implements OnInit {
 
     animateFadeIn() {
         this.cardLayout = <View>this.page.getViewById<View>("cardLayout");
-        console.log('this is the cardLayout', this.cardLayout)
         let definitions = new Array<AnimationDefinition>();
 
         let a1: AnimationDefinition = {
@@ -130,7 +140,6 @@ export class ReservationComponent extends DrawerPage implements OnInit {
         let animationSet = new Animation(definitions);
 
         animationSet.play().then(() => {
-          console.log('fade in completed...');
         })
         .catch((e) => {
             console.log(e.message);
