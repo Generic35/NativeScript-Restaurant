@@ -3,6 +3,10 @@ import { TextField } from 'ui/text-field';
 import { Switch } from 'ui/switch';
 import { Validators, FormBuilder, FormGroup} from '@angular/forms';
 import { ModalDialogService, ModalDialogOptions } from "nativescript-angular/modal-dialog";
+import { Page } from "ui/page";
+import { Animation, AnimationDefinition } from "ui/animation";
+import { View } from "ui/core/view";
+import * as enums from "ui/enums";
 
 import { DrawerPage } from '../shared/drawer/drawer.page';
 import { ReservationModalComponent } from "../reservationmodal/reservationmodal.component";
@@ -15,10 +19,12 @@ import { ReservationModalComponent } from "../reservationmodal/reservationmodal.
 export class ReservationComponent extends DrawerPage implements OnInit {
 
     reservation: FormGroup;
+    cardLayout: View;
+    isReservationConfirmed: boolean;
 
     constructor(private changeDetectorRef: ChangeDetectorRef,
         private formBuilder: FormBuilder, private modalService: ModalDialogService, 
-        private vcRef: ViewContainerRef) {
+        private vcRef: ViewContainerRef, private page: Page) {
             super(changeDetectorRef);
 
             this.reservation = this.formBuilder.group({
@@ -55,7 +61,9 @@ export class ReservationComponent extends DrawerPage implements OnInit {
     }
 
     onSubmit() {
-        console.log(JSON.stringify(this.reservation.value));
+        
+        this.animateFadeOut();        
+        console.log('these are the forms values', JSON.stringify(this.reservation.value));
     }
 
     createModalView(args) {
@@ -76,5 +84,56 @@ export class ReservationComponent extends DrawerPage implements OnInit {
                 }
             });
 
+    }
+
+    animateFadeOut() {
+        this.cardLayout = <View>this.page.getViewById<View>("cardLayout");
+        console.log('this is the cardLayout', this.cardLayout)
+        let definitions = new Array<AnimationDefinition>();
+        let a1: AnimationDefinition = {
+            target: this.cardLayout,
+            scale: { x: 0, y: 0 },
+            translate: { x: 0, y: -200 },
+            opacity: 0,
+            duration: 500,
+            curve: enums.AnimationCurve.easeIn
+        };
+
+        definitions.push(a1);
+        let animationSet = new Animation(definitions);
+
+        animationSet.play().then(() => {
+          console.log('fade out completed...');
+          this.isReservationConfirmed = true;
+          this.animateFadeIn();
+        })
+        .catch((e) => {
+            console.log(e.message);
+        });
+    }
+
+    animateFadeIn() {
+        this.cardLayout = <View>this.page.getViewById<View>("cardLayout");
+        console.log('this is the cardLayout', this.cardLayout)
+        let definitions = new Array<AnimationDefinition>();
+
+        let a1: AnimationDefinition = {
+            target: this.cardLayout,
+            scale: { x: 1, y: 1 },
+            translate: { x: 0, y: 0},
+            opacity: 1,
+            duration: 500,
+            curve: enums.AnimationCurve.easeIn
+        };
+
+        definitions.push(a1);
+        let animationSet = new Animation(definitions);
+
+        animationSet.play().then(() => {
+          console.log('fade in completed...');
+        })
+        .catch((e) => {
+            console.log(e.message);
+        });
     }
 }
