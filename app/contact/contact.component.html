@@ -16,7 +16,7 @@
                 <Label class="body" [text]="address.tel" textWrap="true"></Label>
                 <Label class="body" [text]="address.email" textWrap="true"></Label>
                 <GridLayout orientation="horizontal" rows="*" columns="*, *" class="m-t-20">
-                    <Button row="0" col="0" [text]="('fa-phone' | fonticon) + ' Call'" class="btn btn-rounded-sm btn-outline no-border fa "></Button>
+                    <Button row="0" col="0" [text]="('fa-phone' | fonticon) + ' Call'" class="btn btn-rounded-sm btn-outline no-border fa " (tap)="call()"></Button>
                     <Button row="0" col="1" [text]="('fa-envelope-o' | fonticon) + ' Email'" class="btn btn-rounded-sm btn-outline no-border fa" (tap)="sendEmail()"></Button>
                 </GridLayout>  
             </StackLayout>
