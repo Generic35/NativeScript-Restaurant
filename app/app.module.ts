@@ -10,6 +10,7 @@ import { NativeScriptUIListViewModule } from "nativescript-telerik-ui/listview/a
 import { TNSFontIconModule } from 'nativescript-ngx-fonticon';
 import { NativeScriptFormsModule } from "nativescript-angular/forms";
 import { ReactiveFormsModule } from '@angular/forms';
+import { PlatformService } from './services/platform.service';
 
 import { AppRoutingModule } from "./app.routing";
 import { AppComponent } from "./app.component";
@@ -83,7 +84,8 @@ import { CouchbaseService } from './services/couchbase.service';
         PromotionService,
         LeaderService,
         FavoriteService,
-        CouchbaseService
+        CouchbaseService,
+        PlatformService
     ],
     schemas: [
         NO_ERRORS_SCHEMA
